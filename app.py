@@ -35,13 +35,21 @@ weights = {
     "webdevelopment": 3
 }
 
+skill_set = {
+    "python","sql","javascript","html","css",
+    "dataanalysis","machinelearning","deeplearning",
+    "artificialintelligence","cloudcomputing",
+    "powerbi","excel","java","react","nodejs",
+    "webdevelopment","aws","azure","docker","git"
+}
+
+
 # ------------------- ENGINE -------------------
 
 def clean(text):
     text = text.lower()
     text = re.sub(r'[^a-zA-Z\s]', '', text)
 
-    # Detect multi-word skills first
     for phrase, token in multi_skills.items():
         if phrase in text:
             text = text.replace(phrase, token)
@@ -50,15 +58,14 @@ def clean(text):
     normalized = set()
 
     for w in words:
-        if w in stopwords:
-            continue
-
         if w in synonyms:
-            normalized.add(synonyms[w])
-        else:
+            w = synonyms[w]
+
+        if w in skill_set:
             normalized.add(w)
 
     return normalized
+
 
 def resume_match(resume, job_desc):
     r = clean(resume)
